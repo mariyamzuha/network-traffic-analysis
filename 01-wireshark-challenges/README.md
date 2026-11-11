@@ -15,27 +15,27 @@ Learn to read packet captures in Wireshark and use filters and statistics to ans
 
 ---
 
-## PCAP 1
+## Exercise 1: Network Protocol Analysis
+Practised identifying protocols, analysing ICMP and DNS traffic, and using endpoint statistics to investigate packet captures.
 
-| # | Question | Method |
-|---|---|---|
-| 1 | Which protocol is used over port 3942? | Filter `tcp.port == 3942 \|\| udp.port == 3942`, then read the Protocol column |
-| 2 | Which host was pinged twice? | Filter `icmp`, look for echo requests sent to the same destination twice |
-| 3 | How many DNS query response packets were captured? | Filter `dns.flags.response == 1`, read the displayed packet count in the status bar |
-| 4 | Which host sent the most bytes? | Statistics > Endpoints > IPv4 tab, sort by Tx Bytes |
-
+| Purpose | Wireshark filter / method |
+|---|---|
+| Identify the protocol using a specific port | `tcp.port == <port> \|\| udp.port == <port>` |
+| Identify repeated ICMP echo requests | `icmp`, then inspect the destination addresses of echo request packets |
+| Display DNS response packets | `dns.flags.response == 1`, then check the displayed packet count |
+| Identify the host transmitting the most data | Statistics > Endpoints > IPv4, then sort by Tx Bytes |
 ---
 
-## PCAP 2
+## Exercise 2: HTTP and FTP Traffic Analysis
 
-This capture involved an attack on a Windows host, so most questions were about application-level evidence.
+Practised inspecting application-layer traffic, identifying server banners, following TCP streams, and searching packet contents for relevant information.
 
-| Question | Method |
+| Purpose | Wireshark filter / method |
 |---|---|
-| Find the WebAdmin password | Filter `http`, look at POST requests to the login page, then Follow > HTTP Stream |
-| Find the attacker's FTP server version | Filter `ftp`, read the `220 ... ready` server banner |
-| Find the confidential file name | Filter `ftp` and follow Stream |
-| Find the log file created at 4:51 AM | Edit > Find Packet, search by .log string, then check the packet timestamps |
+| Inspect HTTP POST requests and examine transmitted form data | `http`, then inspect POST requests and use Follow > HTTP Stream |
+| Identify FTP server banner information | `ftp`, then inspect the server response banner |
+| Inspect FTP file transfer activity | `ftp`, then follow the relevant TCP stream |
+| Search packet contents for file references and examine timestamps | Edit > Find Packet, search for a relevant text string, then inspect the packet timestamp |
 
 ---
 
