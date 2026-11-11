@@ -36,34 +36,27 @@ tcpdump -r file.pcap | cut -d ">" -f1 | head   # source side of the first 10 pac
 
 ---
 
-## Challenge 1: SBT-PCAP4
-
-| # | Question | Command |
-|---|---|---|
-| 1 | How many UDP packets? | `tcpdump -nn -r SBT-PCAP4.pcap udp \| wc -l` |
-| 2 | How many TCP packets have both SYN and ACK set? | `tcpdump -nn -r SBT-PCAP4.pcap 'tcp[tcpflags]== 18' \| wc -l` |
-| 3 | Which Chrome version connected to securityblue.team? | `tcpdump -nn -A -r SBT-PCAP4.pcap > capture.txt grep -i 'security blue' capture.txt` |
-| 4 | How many packets have TTL 38? | `tcpdump -nn -r SBT-PCAP4.pcap 'ip[8] == 38' \| wc -l` |
-
-- **UDP count:** the `udp` filter keeps only UDP packets and `wc -l` counts the lines.
-- **SYN+ACK:** SYN starts a TCP connection and the server replies with SYN+ACK (second step of the three-way handshake). The filter is written as `tcp[tcpflags] == 18`, because SYN (2) + ACK (16) = 18.
-- **TTL:** TTL is byte 8 of the IPv4 header, so `ip[8] == 38` matches packets with TTL 38.
+## Challenge 1: 
+The exercise involved analysing a saved packet capture using tcpdump and command-line filters.
+| Purpose | tcpdump command |
+|---|---|
+| Count UDP packets | `tcpdump -nn -r sample.pcap udp \| wc -l` |
+| Count TCP packets with SYN and ACK flags set | `tcpdump -nn -r sample.pcap 'tcp[tcpflags] == 18' \| wc -l` |
+| Extract ASCII packet contents into a text file | `tcpdump -nn -A -r sample.pcap > capture.txt` |
+| Search the extracted text for a specific string | `grep -i '<search-term>' capture.txt` |
+| Count packets with a specific TTL value | `tcpdump -nn -r sample.pcap 'ip[8] == 38' \| wc -l` |
 
 ---
 
-## Challenge 2: SBT-PCAP5
+## Challenge 2: 
+This exercise involved inspecting web traffic, server banners, file requests, and TCP header information.
 
-The capture involves a web server at 192.168.56.111.
-
-| # | Question | Command |
-|---|---|---|
-| 1 | Name of the PNG file on the web server | `tcpdump -nn -A -r SBT-PCAP5.pcap 'host 192.168.56.111' \| grep -i 'png'` |
-| 2 | OpenSSH version on the server | `tcpdump -nn -A -r SBT-PCAP5.pcap \| grep -i 'openssh'` |
-| 3 | Port the ZIP file was served on | `tcpdump -nn -A -r SBT-PCAP5.pcap \| grep -i -B 5 -A 5 '\.zip'` |
-| 4 | When was the packet with TCP checksum 53203 captured? | `tcpdump -nn -vvv -r SBT-PCAP5.pcap \| grep -i -B 5 -A 10 'cksum 0xcfd3'` |
-
-- **ZIP port:** the lines around the `.zip` match show the IP addresses and ports. The server's port is the fixed one. The client uses a temporary high port.
-- **Checksum:** tcpdump prints checksums in hex. 53203 in decimal is `0xcfd3` (`printf '%x\n' 53203`). The timestamp is at the start of the matching packet line, which is why grep shows lines before and after. The same packet can also be found with `tcp[16:2] = 53203`, since the TCP checksum sits at byte 16 of the TCP header.
+| Purpose | tcpdump command |
+|---|---|
+| Search for PNG file references | `tcpdump -nn -A -r sample.pcap 'host <server-IP>' \| grep -i 'png'` |
+| Identify OpenSSH version information | `tcpdump -nn -A -r sample.pcap \| grep -i 'openssh'` |
+| Search for ZIP file references and surrounding information | `tcpdump -nn -A -r sample.pcap \| grep -i -B 5 -A 5 '\.zip'` |
+| Search for a specific TCP checksum value | `tcpdump -nn -vvv -r sample.pcap \| grep -i -B 5 -A 10 'cksum <hex-value>'` |
 ---
 
 ## Live capture: browsing Mozilla
