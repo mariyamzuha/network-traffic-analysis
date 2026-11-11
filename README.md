@@ -16,6 +16,6 @@ Wireshark, tcpdump, Kali Linux (VirtualBox), Linux command line (grep, cut, head
 
 ## Notes
 
-- The packet capture files (PCAPs) belong to the course, so they are not included here. Screenshots and written analysis are.
+- The packet capture files (PCAPs) belong to the course, so they are not included here. Written analysis are.
 - The write-ups focus on method (filters, commands, reasoning) rather than listing final answers.
 - All incidents are simulated lab scenarios.
